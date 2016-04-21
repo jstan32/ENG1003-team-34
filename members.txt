@@ -6,4 +6,4 @@ MEMBER 2 NAME
  
 MEMBER 3 NAME
  
-MEMBER 4 NAME
+David Ting
