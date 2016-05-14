@@ -28,9 +28,10 @@
 
           <main class="mdl-layout__content">
             <div class="content-grid mdl-grid">
-              <div class="mdl-cell">
-                <!--   Main page content here:   -->  
-                
+              <div class="mdl-cell" id="output">
+                <p style="width:300px">
+                    <input class="mdl-slider mdl-js-slider" type="range" id="daySlider" min="-7" max="7" value="0" step="1">
+                  </p>
               
               </div>
             </div>
@@ -38,6 +39,7 @@
         </div>
 
         <!--   JavaScript files:   -->
+        
         <script src="js/locationWeatherCache.js"></script>
         <script src="js/viewLocationPage.js"></script>
     </body>
