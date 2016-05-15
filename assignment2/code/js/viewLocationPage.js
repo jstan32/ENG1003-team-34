@@ -3,6 +3,8 @@
 // This is sample code to demonstrate navigation.
 // You need not use it for final app.
 
+var longitude = -37.8141;
+var latitude = 144.9631;
 
 var locationIndex = localStorage.getItem(APP_PREFIX + "-selectedLocation"); 
 if (locationIndex !== null)
@@ -18,9 +20,28 @@ else
 relativeDay = 0;
 checkDay(); //Retrieves data for current day
 
+var output = document.getElementById("output");
+var outputText = document.createElement('p');
+
+var image = document.getElementById('icon');
+image.style.top = "250px";
+image.style.left = "20px";
+image.style.backgroundPosition = "200px 900000px";
+
+
+
+document.body.appendChild(image);
+
+
 document.getElementById("daySlider").addEventListener("input", slideChange);  //When slider is moved, recheck day and re-evalute
 function slideChange() {
     relativeDay = document.getElementById("daySlider").value; //Change value as relative day : 0 = current day, -7 = 1 week ago
+    console.log(relativeDay)
+}
+
+document.getElementById("daySlider").addEventListener("mouseup",change)
+function change(){
+    relativeDay = document.getElementById("daySlider").value;
     checkDay();
 }
 // Make the API request:
@@ -41,27 +62,28 @@ this.Response = function(weather)
     currentTemp = weather.currently.temperature;
     humidity = weather.currently.humidity;
     wind = weather.currently.windSpeed;
+    icon = weather.currently.icon;
+    
     drawer();
     
     
 }
 // Make the API request:
-var url = "https://api.forecast.io/forecast/f04bebef67361500be90302f1055ac9f/0.233,1.566,"+parseInt(day.getTime()/1000)+"?callback=this.Response";  //Callback function to get weather stuff
+var url = "https://api.forecast.io/forecast/f04bebef67361500be90302f1055ac9f/"+longitude+","+latitude+","+parseInt(day.getTime()/1000)+"?callback=this.Response";  //Callback function to get weather stuff
 var script = document.createElement('script');
 script.src = url;
 document.body.appendChild(script);  //Append this to HTML
 
 drawer = function()
 {
-    output = document.getElementById("output");
-
-    var outputText = document.createElement('p');
+    results = "Date:" + date + "<br />" + "Summary:" + summary + "<br />" + "Max Temp:" + maxTemp + "; Min Temp:" + minTemp + "; Current Temp" + currentTemp + "<br />" + "Huditiy:" + humidity + "%<br />" + "wind:"+ wind + " km/h"; 
+    outputText.innerHTML = results;//Print out, for testing atm
     
-    var paragraph = document.createTextNode(maxTemp);  //Print out, for testing atm
+    var images = {"clear-day":"images/clear-day.png","partly-cloudy-day":"images/partly-cloudy-day.png","cloudy":"images/cloudy.png","rain":"images/rain.png","fog":"images/fog.png"}
+    image.src = images[icon];
     
     
     
     output.appendChild(outputText);  //Append to HTML
-    outputText.appendChild(paragraph);
 }
 }
