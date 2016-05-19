@@ -38,12 +38,15 @@ function LocationWeatherCache()
     // Returns the number of locations stored in the cache.
     //
     this.length = function() {
+        return locations.length();
     };
     
     // Returns the location object for a given index.
     // Indexes begin at zero.
     //
     this.locationAtIndex = function(index) {
+        
+        return locations[index];
     };
 
     // Given a latitude, longitude and nickname, this method saves a 
@@ -52,12 +55,21 @@ function LocationWeatherCache()
     //
     this.addLocation = function(latitude, longitude, nickname)
     {
+        var location = {
+            nickname:nickname,
+            latitude:latitude,
+            longitude:longitude,
+            forecasts:{}
+        };
+        locations.push(location);
+        return locations.length-1;
     }
 
     // Removes the saved location at the given index.
     // 
     this.removeLocationAtIndex = function(index)
     {
+        locations.splice(index,1);
     }
 
     // This method is used by JSON.stringify() to serialise this class.
@@ -65,6 +77,9 @@ function LocationWeatherCache()
     // are active web service requests and so doesn't need to be saved.
     //
     this.toJSON = function() {
+        var locationsPDO = locations;
+        var callbacksPDO = callbacks;
+        return locationsPDO;
     };
 
     // Given a public-data-only version of the class (such as from
@@ -72,6 +87,8 @@ function LocationWeatherCache()
     // instance to match that version.
     //
     this.initialiseFromPDO = function(locationWeatherCachePDO) {
+        locations = locationsPDO;
+        callbacks = callbacksPDO;
     };
 
     // Request weather for the location at the given index for the
