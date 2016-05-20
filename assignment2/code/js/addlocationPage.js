@@ -7,29 +7,57 @@
 // Add Location bar header
 document.getElementById("headerBarTitle").textContent = "Add Location";
 
-// Displays initial map 
-if(!document.getElementById("mapsapi"))
+// Two text fields : (1) Add Location (2) Nickname
+var addlocation = document.getElementById("addlocation").value;
+var nickname = document.getElementById("nickname").value;
+
+// Responding to a change in a HTML text field (1)
+
+var html = '<input type="text" onchange="fieldValueEntered(this.value)"/<br/>';
+html += '<div id ="addlocation" ></div>';
+
+fieldValueEntered = function(value)
 {
-  var script = document.createElement("script");
-  script.setAttribute("src","https://maps.googleapis.com/maps/api/js?v=3");
-  script.setAttribute("id", "mapsapi");
-	var bodyNode = document.getElementsByTagName("body")[0];
-	bodyNode.appendChild(script);
-}
+	addlocationRef.innerHTML = "Add location changed to: " + value;
+};
 
-var map;
+//Responding to change in (2)
 
-document.getElementById("outputArea").innerHTML = '<div id="map" style="height: 600px; width: 100%;">Loading map...</div>';
+var html = '<input type="text" onchange="fieldValueEntered(this.value)"/<br/>';
+html += '<div id ="nickname" ></div>';
 
-setTimeout(initMap,1000);
-
-function initMap()
+fieldValueEntered = function(value)
 {
-  // centered at monash uni clayton
-  var monashClaytonPosition = { lat: -37.912, lng: 145.131};
-  map = new google.maps.Map(document.getElementById("map")),
-  {
-    zoom:16,
-    center : monashClaytonPosition
-  });
+	addlocationRef.innerHTML = "nickname changed to: " + value;
+};
+
+// takes add location and determines if location is accepted
+function geocodelocation() {
+  var addlocation = document.getElementById("addlocation");
+
+  if (!navigator.geolocation){
+    output.innerHTML = "<p>Geolocation location not found or unavailable in your browser</p>";
+    return;
+  }
+
+  function success(addlocation) {
+    var latitude  = addlocation.coords.latitude;
+    var longitude = addlocation.coords.longitude;
+
+    output.innerHTML = '<p>Latitude is ' + latitude + '° <br>Longitude is ' + longitude + '°</p>';
+
+    var img = new Image();
+    img.src = "https://maps.googleapis.com/maps/api/js?key=f04bebef67361500be90302f1055ac9f&callback=initMap" + latitude + "," + longitude + "&zoom=13&size=300x300&sensor=false";
+
+    output.appendChild(img);
+  };
+
+// error for when unable to determine location
+  function error() {
+    output.innerHTML = "Unable to retrieve your location";
+  };
+
+  output.innerHTML = "<p>Locating…</p>";
+
+  navigator.geolocation.getCurrentPosition(success, error);
 }
