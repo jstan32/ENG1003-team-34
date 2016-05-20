@@ -27,8 +27,17 @@
           <main class="mdl-layout__content">
             <div class="content-grid mdl-grid">
               <div class="mdl-cell">
-                <!--   Main page content here:   -->  
-
+                 
+                <div>
+                    <input type = "text" id = "addlocation">
+                    <label for ="addlocation"> Add Location </label>
+                    <p><button onclick ="geocodelocation()">Geocode</button></p>
+                </div>
+                <div>
+                    <input type = "text" id = "nickname">
+                    <label for ="nickname"> Location Nickname </label>
+                    <button id ="nickname">Submit</button>
+                </div>
               </div>
             </div>
           </main>    
@@ -37,5 +46,6 @@
         <!--   JavaScript files:   -->
         <script src="js/locationWeatherCache.js"></script>
         <script src="js/addlocationPage.js"></script>
+        
     </body>
 </html>
